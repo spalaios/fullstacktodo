@@ -1,0 +1,56 @@
+.container {
+    max-width: 600px;
+}
+
+.todo-main-container {
+    margin: 150px 0;
+    border: 1px solid grey;
+    padding: 5px;
+}
+
+.category-block label {
+    margin-bottom: 0;
+}
+
+.category-block {
+    margin: 20px 0 10px 0;
+}
+
+.task-block{
+    margin: 20px 0 10px 0;
+}
+
+.todo-add-task-block {
+    border: 1px solid #4169E1;
+    padding: 5px;
+    border-radius: 10px;
+    box-shadow: 1px 1px 5px 1px #4169E1; 
+}
+
+.task-btn-block {
+    text-align: center;
+    margin: 15px 0 10px 0;
+}
+
+.task-btn-block button {
+    border-radius: 25px;
+    padding: 5px 50px;
+}
+
+.no-border {
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    box-shadow: none;
+    border-radius: 0;
+}
+
+.task-block input:focus {
+    box-shadow: none;
+    border-color: #4169E1;
+}
+
+#todo-category {
+    box-shadow: none;
+    border-color: #ced4da;
+}
