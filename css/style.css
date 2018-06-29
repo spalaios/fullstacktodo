@@ -1,10 +1,13 @@
+body {
+    font-family: montserrat;
+}
+
 .container {
-    max-width: 600px;
+    max-width: 1200px;
 }
 
 .todo-main-container {
     margin: 150px 0;
-    border: 1px solid grey;
     padding: 5px;
 }
 
@@ -24,7 +27,7 @@
     border: 1px solid #4169E1;
     padding: 5px;
     border-radius: 10px;
-    box-shadow: 1px 1px 5px 1px #4169E1; 
+    box-shadow: 1px 1px 5px  #4169E1; 
 }
 
 .task-btn-block {
@@ -45,7 +48,7 @@
     border-radius: 0;
 }
 
-.task-block input:focus {
+.task-block input:focus, .category-block input:focus  {
     box-shadow: none;
     border-color: #4169E1;
 }
@@ -54,3 +57,73 @@
     box-shadow: none;
     border-color: #ced4da;
 }
+
+.todo-add-task-block-right-block {
+    /* border: 1px solid black; */
+    border-radius: 5px;
+    background: #ffdb5c;
+}
+.todo-list-title-block {
+    padding: 5px 10px;
+    text-align: center;
+    border-bottom: 1px solid royalblue;
+    max-width: fit-content;
+    margin: auto;
+}
+
+.todo-list-title-block p {
+    margin-bottom: 0;
+}
+
+.todo-lists-block {
+    margin-top: 5px;
+}
+
+.checkbox-para-block {
+    padding: 5px;
+    display: flex;
+    justify-content: space-between;
+    max-width: 98%;
+    margin: 0 auto 10px auto;
+    border-radius: 8px;
+    /* box-shadow: 2px 2px 5px #de7a22, -2px -2px 5px #de7a22; */
+    box-shadow: 3px 3px 5px #ee693f;
+    background-color: #4cb5f5;
+    /* background-color: #31a9b8; */
+    color: #fff;
+}
+.checkbox-para-block p {
+    margin-bottom: 0;
+}
+
+.task-para-block {
+    /* border: 1px solid royalblue; */
+}
+.tasks-para {
+    padding: 5px 8px;
+    text-align: justify;
+    font-weight: bold;
+}
+
+.task-category-block{
+}
+
+.task-category-block p {
+    padding: 0 10px;
+    border-radius: 15px;
+    background-color: #e15253;
+    
+}
+
+.task-category-block, .input-check-block {
+    margin: 0 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.tasks-para.completed{
+    text-decoration: line-through;
+    text-decoration-color: black;
+}
+

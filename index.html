@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>ToDo App</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,700" rel="stylesheet">
     <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
@@ -13,27 +14,53 @@
 
     <div class="container">
         <div class="row">
-            <div class="col-10">
+            <div class="col-12">
                 <div class="todo-main-container">
                     <div class="row">
-                        <div class="col-12">
+                        <div class="col-5">
                             <div class="todo-add-task-block">
                                 <div class="task-block">
                                     <input type="text" class="form-control no-border" id="todo-task" aria-describedby="" placeholder="Add your task here...">
                                 </div>
                                 <div class="category-block">
-                                    <!-- <label for="todo-category">Category</label> -->
-                                    <select  class="form-control no-border" id="todo-category">
-                                        <option id="category-option" value="0">Select category</option>
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
-                                        <option>5</option>
-                                    </select>
+                                    <input type="text" class="form-control no-border" id="category-input" aria-describedby="" placeholder="Category">
                                 </div>
                                 <div class="task-btn-block">
-                                    <button class="btn  btn-primary">Save</button>
+                                    <button class="btn  btn-primary" id="save-btn">Save</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-7">
+                            <div class="todo-add-task-block-right-block">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="todo-lists-block">
+                                            <div class="checkbox-para-block">
+                                                <div class="task-para-block">
+                                                    <p class="tasks-para">This is my list and my way or highway A tuple is a collection which is ordered and unchangeable. In Python tuples are written with round brackets.</p>
+                                                </div>
+                                                <div class="task-category-block">
+                                                    <p class="task-category">General</p>     
+                                                </div>
+                                                <div class="input-check-block">
+                                                     <input type="checkbox" class="task-checkbox-input"> 
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="todo-lists-block">
+                                            <div class="checkbox-para-block">
+                                                <div class="task-para-block">
+                                                    <p class="tasks-para completed">This is my list and my way or highway A tuple is a collection which is ordered and unchangeable. In Python tuples are written with round brackets.</p>
+                                                </div>
+                                                <div class="task-category-block">
+                                                    <p class="task-category">Grocery</p>     
+                                                </div>
+                                                <div class="input-check-block">
+                                                     <input type="checkbox" class="task-checkbox-input" checked> 
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
