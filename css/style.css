@@ -7,7 +7,7 @@ body {
 }
 
 .todo-main-container {
-    margin: 150px 0;
+    margin: 80px 0;
     padding: 5px;
 }
 
@@ -127,3 +127,21 @@ body {
     text-decoration-color: black;
 }
 
+.update-btn-block, .refresh-btn-block {
+    margin-top: 15px;
+}
+
+.todo-add-task-block-right-block {
+    max-height: 500px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.todo-add-task-block-right-block::-webkit-scrollbar {
+    width: 2px;
+}
+
+.todo-add-task-block-right-block::-webkit-scrollbar-thumb {
+    background-color: #e15253;
+    outline: 1px solid slategrey;
+  }
