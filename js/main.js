@@ -2,11 +2,25 @@ $(document).ready(function(){
     console.log('main js loaded...');
 
     $.ajax({
-        url: "./data.json",
+        // url: "./data.json",
+        url : "http://localhost:5000/refresh",
+        type : "GET"
       })
     .done((data) => {
-        $('#refresh').on('click', function(){
+        if(data.length > 0) {
             populateLists(data);
+            console.log(data);
+        }
+
+        $('#refresh').on('click', function(){
+            $.ajax({
+                // url: "./data.json",
+                url : "http://localhost:5000/refresh",
+                type : "GET"
+              }).done((result) => {
+                populateLists(result);
+                console.log(result);
+              })    
             
         });
 
@@ -18,10 +32,11 @@ $(document).ready(function(){
 
     function populateLists(listsData){
         let listContainer = $('.main-list-container');
+        listContainer.html('');
         for(let i = 0; i < listsData.length; i++){
             let currentListDetail = listsData[i];
             // console.log(currentListDetail['completed']);
-            let listBlock = `<div class="todo-lists-block" id="${currentListDetail['id']}">
+            let listBlock = `<div class="todo-lists-block" id="${currentListDetail['taskId']}">
                                 <div class="checkbox-para-block">
                                     <div class="task-para-block">
                                         <p class="tasks-para ${(currentListDetail['completed'] == "true") ? 'completed' : 'not-completed'}">${currentListDetail['task']}</p>
@@ -55,7 +70,25 @@ $(document).ready(function(){
         }else if(category.length == 0){
             generateAlert('category cannot be empty ...');
         }else {
+            //create the object to be sent
+
+            let taskToAdd = {
+                category : category,
+                completed : isCompleted,
+                task : task
+            }
+
             //send this value in ajax on some url 
+            $.ajax({
+                type: "POST",
+                url: 'http://127.0.0.1:5000/add',
+                data: taskToAdd,
+                success: function(value){
+                    console.log('successfully sent...');
+                    console.log(value);
+                    clearFields();
+                }
+              });
         }
 
        
@@ -68,6 +101,7 @@ $(document).ready(function(){
         }else {
             //create an array which will include all the tasks as objects
             let tasksArray = [];
+            let tasksObject = {};
             //loop through each block and add each task details into the array
             for (let i = 0; i < todoListsBlock.length; i++){
                 let currentTodoListBlock = $(todoListsBlock[i]);
@@ -76,15 +110,29 @@ $(document).ready(function(){
                 let task = getText($(grandChildOfCurrentListBlock[0]));
                 let category = getText($(grandChildOfCurrentListBlock[1]));
                 let status = getTasksStatus($(grandChildOfCurrentListBlock[0]));
-
+                let taskId = currentTodoListBlock.attr('id');
                 let taskDetails = {
+                    taskId : taskId,
                     category : category,
                     completed : status,
                     task : task
                 }
-
+                tasksObject[i] = taskDetails;
                 tasksArray.push(taskDetails);
             }
+
+            console.log(tasksArray);
+
+            //ajax call here..
+            $.ajax({
+                type: "POST",
+                url: 'http://127.0.0.1:5000/update',
+                data: tasksObject,
+                success: function(value){
+                    console.log('tasks details successfully sent...');
+                    console.log(value);
+                }
+              });
         }
     });
 
@@ -127,6 +175,12 @@ $(document).ready(function(){
             }
           });
     }
+
+    function clearFields(){
+        $('#todo-task').val('');
+        $('#category-input').val('');
+        $('#todo-task').focus();
+    }   
 
 
 

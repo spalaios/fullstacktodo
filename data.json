@@ -1,56 +1,56 @@
 [
     {
-        "id" : "27734327",
+        "taskId" : "27734327",
         "category" : "General",
-        "completed" : "true",
+        "completed" : true,
         "task" : "learn about python in details also learn the implementation of each dsa"
     },
     {
-        "id" : "564897987",
+        "taskId" : "564897987",
         "category" : "Programming",
-        "completed" : "false",
+        "completed" : false,
         "task" : "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Aut sequi ratione mollitia tempora, cum provident?"
     },
     {
-        "id" : "96632457",
+        "taskId" : "96632457",
         "category" : "Grocery",
-        "completed" : "false",
+        "completed" : false,
         "task" : "make a list of all items and bring it from demart"
     },
     {
-        "id" : "54127496",
+        "taskId" : "54127496",
         "category" : "Office",
-        "completed" : "false",
+        "completed" : false,
         "task" : "make the diet chart view in table view again"
     },
     {
-        "id" : "36514784",
+        "taskId" : "36514784",
         "category" : "Study",
-        "completed" : "true",
+        "completed" : true,
         "task" : "study the os books first chapter and read one chapter on leonado's biography"
     },
     {
-        "id" : "54127496",
+        "taskId" : "54127496",
         "category" : "Office",
-        "completed" : "false",
+        "completed" : false,
         "task" : "make the diet chart view in table view again"
     },
     {
-        "id" : "54127496",
+        "taskId" : "54127496",
         "category" : "Office",
-        "completed" : "false",
+        "completed" : false,
         "task" : "make the diet chart view in table view again"
     },
     {
-        "id" : "564897987",
+        "taskId" : "564897987",
         "category" : "Programming",
-        "completed" : "false",
+        "completed" : false,
         "task" : "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Aut sequi ratione mollitia tempora, cum provident?"
     },
     {
-        "id" : "564897987",
+        "taskId" : "564897987",
         "category" : "Programming",
-        "completed" : "false",
+        "completed" : false,
         "task" : "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Aut sequi ratione mollitia tempora, cum provident?"
     }
 
