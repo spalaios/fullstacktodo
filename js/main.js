@@ -13,20 +13,33 @@ $(document).ready(function(){
         }
 
         $('#refresh').on('click', function(){
-            $.ajax({
-                // url: "./data.json",
-                url : "http://localhost:5000/refresh",
-                type : "GET"
-              }).done((result) => {
-                populateLists(result);
-                console.log(result);
-              })    
+                refreshTask();
             
         });
 
-        
+        $(document).on('click', '.delete-btn', function(){
+            console.log('dele button clicked');
+            console.log($(this));
+            // populateLists(data);
+            let taskId = $(this).parent().parent().parent().attr('id');
+            console.log(taskId);
 
+            let taskDetails = {
+                taskId : taskId
+            }
 
+             //send this value in ajax on some url 
+             $.ajax({
+                type: "DELETE",
+                url: 'http://127.0.0.1:5000/delete',
+                data: taskDetails,
+                success: function(value){
+                    console.log('successfully sent...');
+                    console.log(value);
+                    refreshTask();
+                }
+              });
+        });
     });
 
 
@@ -44,6 +57,9 @@ $(document).ready(function(){
                                     <div class="task-category-block">
                                         <p class="task-category">${currentListDetail['category']}</p>     
                                     </div>
+                                    <div class="delete-block">
+                                        <img src="./delete.png" alt="" class="delete-btn">
+                                    </div>
                                     <div class="input-check-block">
                                         <input type="checkbox" class="task-checkbox-input" ${(currentListDetail['completed'] == "true") ? 'checked' : ''}> 
                                     </div>
@@ -51,6 +67,7 @@ $(document).ready(function(){
                             </div>`;
             listContainer.append(listBlock);
         } 
+        console.log('Refreshed...');
     }
 
 
@@ -86,6 +103,7 @@ $(document).ready(function(){
                 success: function(value){
                     console.log('successfully sent...');
                     console.log(value);
+                    refreshTask();
                     clearFields();
                 }
               });
@@ -94,47 +112,50 @@ $(document).ready(function(){
        
     });
 
-    $('#update').on('click', function(){
-        let todoListsBlock = $('.todo-lists-block');
-        if(todoListsBlock.length == 0){
-            return;
-        }else {
-            //create an array which will include all the tasks as objects
-            let tasksArray = [];
-            let tasksObject = {};
-            //loop through each block and add each task details into the array
-            for (let i = 0; i < todoListsBlock.length; i++){
-                let currentTodoListBlock = $(todoListsBlock[i]);
-                let childOfCurrentListBlock = currentTodoListBlock.children();
-                let grandChildOfCurrentListBlock = childOfCurrentListBlock.children();
-                let task = getText($(grandChildOfCurrentListBlock[0]));
-                let category = getText($(grandChildOfCurrentListBlock[1]));
-                let status = getTasksStatus($(grandChildOfCurrentListBlock[0]));
-                let taskId = currentTodoListBlock.attr('id');
-                let taskDetails = {
-                    taskId : taskId,
-                    category : category,
-                    completed : status,
-                    task : task
-                }
-                tasksObject[i] = taskDetails;
-                tasksArray.push(taskDetails);
-            }
+    // $('#update').on('click', function(){
+    //     let todoListsBlock = $('.todo-lists-block');
+    //     if(todoListsBlock.length == 0){
+    //         return;
+    //     }else {
+    //         //create an array which will include all the tasks as objects
+    //         let tasksArray = [];
+    //         let tasksObject = {};
+    //         //loop through each block and add each task details into the array
+    //         for (let i = 0; i < todoListsBlock.length; i++){
+    //             let currentTodoListBlock = $(todoListsBlock[i]);
+    //             let childOfCurrentListBlock = currentTodoListBlock.children();
+    //             let grandChildOfCurrentListBlock = childOfCurrentListBlock.children();
+    //             let task = getText($(grandChildOfCurrentListBlock[0]));
+    //             let category = getText($(grandChildOfCurrentListBlock[1]));
+    //             let status = getTasksStatus($(grandChildOfCurrentListBlock[0]));
+    //             let taskId = currentTodoListBlock.attr('id');
+    //             let taskDetails = {
+    //                 taskId : taskId,
+    //                 category : category,
+    //                 completed : status,
+    //                 task : task
+    //             }
+    //             tasksObject[i] = taskDetails;
+    //             tasksArray.push(taskDetails);
+    //         }
 
-            console.log(tasksArray);
+    //         console.log(tasksArray);
 
-            //ajax call here..
-            $.ajax({
-                type: "POST",
-                url: 'http://127.0.0.1:5000/update',
-                data: tasksObject,
-                success: function(value){
-                    console.log('tasks details successfully sent...');
-                    console.log(value);
-                }
-              });
-        }
-    });
+    //         //ajax call here..
+    //         $.ajax({
+    //             type: "PUT",
+    //             url: 'http://127.0.0.1:5000/update',
+    //             data: tasksObject,
+    //             success: function(value){
+    //                 console.log('tasks details successfully sent...');
+    //                 console.log(value);
+    //             },
+    //             failure : function(error) {
+    //                 console.log(error);
+    //             }
+    //           });
+    //     }
+    // });
 
     function getText(ele){
         let childOfEle = ele.children();
@@ -145,14 +166,16 @@ $(document).ready(function(){
         let childOfEle = ele.children();
         let status = '';
         if($(childOfEle).hasClass('completed')){
-            status = 'true';
+            status = "true";
         }else {
-            status = 'false';
+            status = "false";
         }
         return status;
     }
 
     $(document).on('change', '.task-checkbox-input', function(){
+        let taskId = $(this).parent().parent().parent().attr('id');
+        console.log(taskId);
         let thisSibling = $(this).parent().siblings();
         let checkPara = $(thisSibling[0]).children();
         let mainPara = $(checkPara[0]);
@@ -163,8 +186,35 @@ $(document).ready(function(){
             mainPara.addClass('completed');
             mainPara.removeClass('not-completed');
         }
+
+        let completeStatus = (mainPara.hasClass('completed')) ? "true" : "false";
+        console.log(completeStatus);
+
+        taskDetails = {
+            taskId : taskId,
+            completed : completeStatus
+        }
+
+        //ajax call here..
+        $.ajax({
+            type: "PUT",
+            url: 'http://127.0.0.1:5000/update',
+            data: taskDetails,
+            success: function(value){
+                console.log('tasks details successfully sent...');
+                console.log(value);
+            },
+            failure : function(error) {
+                console.log(error);
+            }
+          });
         
     });
+
+   
+
+
+
 
     function generateAlert(alertMessage) {
         bootbox.alert({ 
@@ -181,6 +231,17 @@ $(document).ready(function(){
         $('#category-input').val('');
         $('#todo-task').focus();
     }   
+
+    function refreshTask(data) {
+        $.ajax({
+            // url: "./data.json",
+            url : "http://localhost:5000/refresh",
+            type : "GET"
+          }).done((result) => {
+            populateLists(result);
+            console.log(result);
+          });
+    }
 
 
 

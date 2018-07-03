@@ -97,7 +97,7 @@ body {
 }
 
 .task-para-block {
-    /* border: 1px solid royalblue; */
+    flex-grow: 3;
 }
 .tasks-para {
     padding: 5px 8px;
@@ -145,3 +145,14 @@ body {
     background-color: #e15253;
     outline: 1px solid slategrey;
   }
+
+.delete-block {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+
+.delete-btn {
+    max-width: 34px;
+}
