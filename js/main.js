@@ -1,6 +1,6 @@
 $(document).ready(function(){
     console.log('main js loaded...');
-
+    let mainTaskContainer = $('.main-list-container');
     $.ajax({
         // url: "./data.json",
         url : "http://localhost:5000/refresh",
@@ -22,6 +22,7 @@ $(document).ready(function(){
             console.log($(this));
             // populateLists(data);
             let taskId = $(this).parent().parent().parent().attr('id');
+            let taskBlock = $(this).parent().parent().parent();
             console.log(taskId);
 
             let taskDetails = {
@@ -36,7 +37,11 @@ $(document).ready(function(){
                 success: function(value){
                     console.log('successfully sent...');
                     console.log(value);
-                    refreshTask();
+                    // refreshTask(); // remove the task locally
+                    // let taskBlock = $(this).parent().parent().parent();
+                    console.log(taskBlock);
+                    removeTaskLocally(taskId);
+                    // console.log(value);
                 }
               });
         });
@@ -49,23 +54,24 @@ $(document).ready(function(){
         for(let i = 0; i < listsData.length; i++){
             let currentListDetail = listsData[i];
             // console.log(currentListDetail['completed']);
-            let listBlock = `<div class="todo-lists-block" id="${currentListDetail['taskId']}">
-                                <div class="checkbox-para-block">
-                                    <div class="task-para-block">
-                                        <p class="tasks-para ${(currentListDetail['completed'] == "true") ? 'completed' : 'not-completed'}">${currentListDetail['task']}</p>
-                                    </div>
-                                    <div class="task-category-block">
-                                        <p class="task-category">${currentListDetail['category']}</p>     
-                                    </div>
-                                    <div class="delete-block">
-                                        <img src="./delete.png" alt="" class="delete-btn">
-                                    </div>
-                                    <div class="input-check-block">
-                                        <input type="checkbox" class="task-checkbox-input" ${(currentListDetail['completed'] == "true") ? 'checked' : ''}> 
-                                    </div>
-                                </div>
-                            </div>`;
-            listContainer.append(listBlock);
+            // let listBlock = `<div class="todo-lists-block" id="${currentListDetail['taskId']}">
+            //                     <div class="checkbox-para-block">
+            //                         <div class="task-para-block">
+            //                             <p class="tasks-para ${(currentListDetail['completed'] == "true") ? 'completed' : 'not-completed'}">${currentListDetail['task']}</p>
+            //                         </div>
+            //                         <div class="task-category-block">
+            //                             <p class="task-category">${currentListDetail['category']}</p>     
+            //                         </div>
+            //                         <div class="delete-block">
+            //                             <img src="./delete.png" alt="" class="delete-btn">
+            //                         </div>
+            //                         <div class="input-check-block">
+            //                             <input type="checkbox" class="task-checkbox-input" ${(currentListDetail['completed'] == "true") ? 'checked' : ''}> 
+            //                         </div>
+            //                     </div>
+            //                 </div>`;
+            // listContainer.append(listBlock);
+            appendTaskToList(currentListDetail, listContainer);
         } 
         console.log('Refreshed...');
     }
@@ -103,7 +109,8 @@ $(document).ready(function(){
                 success: function(value){
                     console.log('successfully sent...');
                     console.log(value);
-                    refreshTask();
+                    // refreshTask(); //insert this task locally
+                    appendTaskToList(value, mainTaskContainer);
                     clearFields();
                 }
               });
@@ -112,50 +119,6 @@ $(document).ready(function(){
        
     });
 
-    // $('#update').on('click', function(){
-    //     let todoListsBlock = $('.todo-lists-block');
-    //     if(todoListsBlock.length == 0){
-    //         return;
-    //     }else {
-    //         //create an array which will include all the tasks as objects
-    //         let tasksArray = [];
-    //         let tasksObject = {};
-    //         //loop through each block and add each task details into the array
-    //         for (let i = 0; i < todoListsBlock.length; i++){
-    //             let currentTodoListBlock = $(todoListsBlock[i]);
-    //             let childOfCurrentListBlock = currentTodoListBlock.children();
-    //             let grandChildOfCurrentListBlock = childOfCurrentListBlock.children();
-    //             let task = getText($(grandChildOfCurrentListBlock[0]));
-    //             let category = getText($(grandChildOfCurrentListBlock[1]));
-    //             let status = getTasksStatus($(grandChildOfCurrentListBlock[0]));
-    //             let taskId = currentTodoListBlock.attr('id');
-    //             let taskDetails = {
-    //                 taskId : taskId,
-    //                 category : category,
-    //                 completed : status,
-    //                 task : task
-    //             }
-    //             tasksObject[i] = taskDetails;
-    //             tasksArray.push(taskDetails);
-    //         }
-
-    //         console.log(tasksArray);
-
-    //         //ajax call here..
-    //         $.ajax({
-    //             type: "PUT",
-    //             url: 'http://127.0.0.1:5000/update',
-    //             data: tasksObject,
-    //             success: function(value){
-    //                 console.log('tasks details successfully sent...');
-    //                 console.log(value);
-    //             },
-    //             failure : function(error) {
-    //                 console.log(error);
-    //             }
-    //           });
-    //     }
-    // });
 
     function getText(ele){
         let childOfEle = ele.children();
@@ -239,8 +202,35 @@ $(document).ready(function(){
             type : "GET"
           }).done((result) => {
             populateLists(result);
-            console.log(result);
+            // console.log(result);
           });
+    }
+
+    function appendTaskToList(returnedObject, listContainer){
+        let listBlock = `<div class="todo-lists-block" id="${returnedObject['taskId']}">
+                                <div class="checkbox-para-block">
+                                    <div class="task-para-block">
+                                        <p class="tasks-para ${(returnedObject['completed'] == "true") ? 'completed' : 'not-completed'}">${returnedObject['task']}</p>
+                                    </div>
+                                    <div class="task-category-block">
+                                        <p class="task-category">${returnedObject['category']}</p>     
+                                    </div>
+                                    <div class="delete-block">
+                                        <img src="./delete.png" alt="" class="delete-btn">
+                                    </div>
+                                    <div class="input-check-block">
+                                        <input type="checkbox" class="task-checkbox-input" ${(returnedObject['completed'] == "true") ? 'checked' : ''}> 
+                                    </div>
+                                </div>
+                            </div>`;
+            listContainer.append(listBlock); 
+            console.log('appended task locally...');
+    }
+
+
+    function removeTaskLocally(id){
+        $('#'+id).remove();
+        console.log('removed task locally...');
     }
 
 
